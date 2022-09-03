@@ -5,6 +5,9 @@ using UnityEngine;
 public class EndTutorialManager : MonoBehaviour
 {
     // Start is called before the first frame update
+
+
+
     void Start()
     {
         

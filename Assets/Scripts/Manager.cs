@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
 
+
+    [SerializeField] Dropdown dropdownDistress;
+    [SerializeField] Dropdown dropdownMap;
+    [SerializeField] Dropdown dropdownAnimalType;
 
 
     public void TutorialButtonPressed()
@@ -69,6 +74,23 @@ public class Manager : MonoBehaviour
     }
 
     public void EncuestaSiguienteMap() {
+
+ 
+
+        string type_of_animal = dropdownAnimalType.options[dropdownAnimalType.value].text;
+        string map = dropdownMap.options[dropdownMap.value].text;
+
+        string pre_distress = dropdownDistress.options[dropdownDistress.value].text;
+        int index_of_twopoints = pre_distress.IndexOf(':');
+        float amount_distress = float.Parse(pre_distress.Substring(0, index_of_twopoints));
+
+
+
+
+        PlayerPreferences.LoadResources(type_of_animal, amount_distress, map);
+
+
+
         SceneManager.LoadScene(PlayerPreferences.getMap());
     }
 

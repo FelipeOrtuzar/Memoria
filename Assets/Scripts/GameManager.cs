@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameManager : MonoBehaviour
@@ -74,6 +73,7 @@ public class GameManager : MonoBehaviour
 
     private void ThrowRayCast()
     {
+        
 
         Vector3 originPoint = Phobo.transform.position;
         Vector3 targetPoint = Player.transform.position;
@@ -88,6 +88,15 @@ public class GameManager : MonoBehaviour
 
         TiempoObservacionDirecta.text = "Tiempo observación directa: " + ((int)timeInDirectExposure).ToString() + "s.";
         DistanciaMínima.text = "Distancia mínina con Fobos: " + ((int)minDistanceToPhobo/2).ToString() + "m aprox.";
+
+
+        if (timeInDirectExposure >= EndGameManager.HowMuchStare) {
+            EndGameManager.HasPlayerStared = true;
+        }
+
+        if (minDistanceToPhobo <= EndGameManager.HowMuchClose) {
+            EndGameManager.HasPlayerClose = true;
+        }
     }
 
     private void TeleportToSafeHouse() {
@@ -117,7 +126,7 @@ public class GameManager : MonoBehaviour
         Phobo.transform.localScale = PositionTransformChoosed.localScale;
         Phobo.transform.rotation = PositionTransformChoosed.rotation;
 
-        Phobo.AddComponent<XRGrabInteractable>();
+        //Phobo.AddComponent<XRGrabInteractable>();
     }
 
     public void ClickedOnContinuar()
@@ -140,7 +149,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ClickedMostrarArana(RawImage image) {
+    public void ClickedMostrarFobos(RawImage image) {
 
         
         image.gameObject.SetActive(!image.gameObject.activeInHierarchy);
@@ -148,12 +157,29 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void AranaTomada() {
-        SceneManager.LoadScene("Menu");
+ /*   public void AranaTomada() {
+        SceneManager.GetSceneByName("asd");
         Debug.Log("La arana ha sido tomada");
+        EndGameManager.HasPhoboFound = true;
+        SceneManager.LoadScene("Menu");
+        
+        
+    }*/
+
+
+    public void FobosTomado(SelectEnterEventArgs args)
+    {
+        GameObject objectt = args.interactableObject.transform.gameObject;
+
+        if (objectt.TryGetComponent<Fobos>(out Fobos _)) {
+            EndGameManager.HasPhoboFound = true;
+            SceneManager.LoadScene("EndGameScene");
+        }
+
+        
+
+
     }
-
-
 
 
 
